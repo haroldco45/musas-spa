@@ -66,7 +66,7 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        /* Encabezado Principal Modificado a Fondo Blanco */
+        /* Encabezado Principal */
         header {
             background: white;
             padding: 30px 20px;
@@ -336,6 +336,21 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        .btn-excel {
+            background: #107c41;
+            color: white;
+            font-size: 13px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
     </style>
 </head>
 <body>
@@ -460,7 +475,7 @@
                                 <option value="Forrado poligel">Forrado poligel</option>
                                 <option value="Retoque Forrado">Retoque Forrado</option>
                                 <option value="Poligel esculpido">Poligel esculpido</option>
-                                <option value="Acrílico esculpido">Acrriílico esculpido</option>
+                                <option value="Acrílico esculpido">Acrílico esculpido</option>
                                 <option value="Acrílico con tips">Acrílico con tips</option>
                                 <option value="Postizas + Semipermanente">Postizas + Semipermanente</option>
                                 <option value="Press on">Press on</option>
@@ -500,6 +515,7 @@
 
                 <div class="history-section" id="admin-history-section" style="display: none;">
                     <h3><i class="fa-solid fa-lock"></i> Panel Administrador: Control de Agenda</h3>
+                    <button class="btn-excel" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> Exportar Agenda a Excel</button>
                     <div id="appointments-history-container"></div>
                 </div>
             </div>
@@ -538,7 +554,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Revisar si viene una confirmación de cita en la URL (?c=...)
             const urlParams = new URLSearchParams(window.location.search);
             const incomingData = urlParams.get('c');
             if (incomingData) {
@@ -562,10 +577,50 @@
                 isAdmin = true;
                 document.getElementById("admin-history-section").style.display = "block";
                 renderHistory();
-                alert("Modo Administrador activado. Ahora puedes ver, borrar y editar horarios.");
+                alert("Modo Administrador activado. Ahora puedes ver, borrar, editar y exportar a Excel.");
             } else {
                 alert("Contraseña incorrecta.");
             }
+        }
+
+        // FUNCIÓN CLAVE: Crea y descarga el archivo de alarma .ics para el cliente
+        function createCalendarAlarm(appt) {
+            const dateClean = appt.date.replace(/-/g, '');
+            const timeClean = appt.time.replace(/:/g, '');
+            
+            // Estructurar fecha en formato UTC aproximado para archivos iCal
+            const startDateTime = `${dateClean}T${timeClean}00`;
+            
+            // Calcular una hora estimada de duración
+            let endHour = parseInt(timeClean.substring(0,2)) + 1;
+            if(endHour < 10) endHour = '0' + endHour;
+            const endDateTime = `${dateClean}T${endHour}${timeClean.substring(2,4)}00`;
+
+            const icsContent = "BEGIN:VCALENDAR\n" +
+                               "VERSION:2.0\n" +
+                               "PRODID:-//Vibras Positivas HM//Musas PWA//ES\n" +
+                               "BEGIN:VEVENT\n" +
+                               `UID:${appt.id}@musasspa.com\n` +
+                               `DTSTAMP:${startDateTime}\n` +
+                               `DTSTART:${startDateTime}\n` +
+                               `DTEND:${endDateTime}\n` +
+                               `SUMMARY:Cita Musas Spa - ${appt.service}\n` +
+                               `DESCRIPTION:Tu cita con ${appt.staff}. ¡Te esperamos!\n` +
+                               "BEGIN:VALARM\n" +
+                               "TRIGGER:-PT2H\n" + // Alerta programada 2 horas antes de la cita
+                               "ACTION:DISPLAY\n" +
+                               "DESCRIPTION:Recordatorio de Cita en Musas Spa\n" +
+                               "END:VALARM\n" +
+                               "END:VEVENT\n" +
+                               "END:VCALENDAR";
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Alarma_MusasSpa_${dateClean}.ics`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         function sendWhatsApp(event) {
@@ -581,7 +636,9 @@
 
             const apptObj = { id: appointmentId, name, phone, service, staff, date, time };
             
-            // Link de confirmación automática de retorno para el Admin
+            // Lanzar la descarga de la alarma inmediatamente para el cliente
+            createCalendarAlarm(apptObj);
+            
             const secureToken = btoa(JSON.stringify(apptObj));
             const confirmLink = `https://haroldco45.github.io/musas-spa/?c=${secureToken}`;
 
@@ -657,6 +714,33 @@
                 localStorage.setItem("musas_history", JSON.stringify(history));
                 renderHistory();
             }
+        }
+
+        // FUNCIÓN CLAVE: Agrupa la memoria del administrador y genera la descarga limpia de Excel
+        function exportToExcel() {
+            const history = JSON.parse(localStorage.getItem("musas_history")) || [];
+            if(history.length === 0) {
+                alert("No hay datos disponibles para exportar.");
+                return;
+            }
+
+            // Crear estructura de tabla HTML con estilos básicos para Excel
+            let excelTable = `<table border="1"><tr style="background-color:#d4af37; color:white; font-weight:bold;">` +
+                             `<th>Cliente</th><th>Celular</th><th>Servicio</th><th>Especialista</th><th>Fecha</th><th>Hora</th></tr>`;
+            
+            history.forEach(appt => {
+                excelTable += `<tr><td>${appt.name}</td><td>${appt.phone}</td><td>${appt.service}</td>` +
+                              `<td>${appt.staff}</td><td>${appt.date}</td><td>${appt.time}</td></tr>`;
+            });
+            excelTable += "</table>";
+
+            const blob = new Blob([excelTable], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Agenda_MusasSpa_2026.xls`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         if ('serviceWorker' in navigator) {
