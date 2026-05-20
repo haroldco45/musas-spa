@@ -32,7 +32,7 @@
     <style>
         :root {
             --gold: #d4af37;
-            --dark: #1a2a3a;
+            --dark: #222;
             --light-bg: #fdfbf7;
             --text: #444;
             --danger: #dc3545;
@@ -248,16 +248,16 @@
         .icon-tk { color: #000000; }
         .icon-map { color: #EA4335; }
 
-        /* Estilos de la sección Historial de Citas */
+        /* Contenedor del Historial de Citas */
         .history-section {
             margin-top: 30px;
-            border-top: 2px dashed #ccc;
+            border-top: 2px dashed #ddd;
             padding-top: 20px;
         }
 
         .history-section h3 {
-            font-size: 18px;
-            color: var(--dark);
+            font-size: 16px;
+            color: #1a2a3a;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -269,15 +269,14 @@
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border-left: 4px solid var(--gold);
             position: relative;
         }
 
         .history-card p {
             font-size: 13px;
-            margin-bottom: 4px;
-            line-height: 1.4;
+            margin-bottom: 3px;
         }
 
         .btn-delete {
@@ -289,7 +288,7 @@
             border: none;
             cursor: pointer;
             font-size: 14px;
-            padding: 5px;
+            padding: 4px;
             transition: 0.2s;
         }
 
@@ -297,7 +296,7 @@
             transform: scale(1.15);
         }
 
-        /* Footer Obligatorio */
+        /* Footer */
         footer {
             background: #111;
             color: #bbb;
@@ -309,14 +308,6 @@
         }
 
         footer a { color: var(--gold); text-decoration: none; }
-
-        /* Botón de Instalación */
-        #install-btn {
-            display: none;
-            background: #222;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-        }
     </style>
 </head>
 <body>
@@ -429,4 +420,198 @@
                                 <option value="Semipermanente Manos">Semipermanente Manos</option>
                                 <option value="Semipermanente Pies">Semipermanente Pies</option>
                             </optgroup>
-                            <opt
+                            <optgroup label="Tradicional">
+                                <option value="Tradicional Manos">Tradicional Manos</option>
+                                <option value="Tradicional Pies">Tradicional Pies</option>
+                            </optgroup>
+                            <optgroup label="Sistemas y Técnicas">
+                                <option value="Dipping">Dipping</option>
+                                <option value="Forrado en acrílico">Forrado en acrílico</option>
+                                <option value="Forrado poligel">Forrado poligel</option>
+                                <option value="Retoque Forrado">Retoque Forrado</option>
+                                <option value="Poligel esculpido">Poligel esculpido</option>
+                                <option value="Acrílico esculpido">Acrílico esculpido</option>
+                                <option value="Acrílico con tips">Acrílico con tips</option>
+                                <option value="Postizas + Semipermanente">Postizas + Semipermanente</option>
+                                <option value="Press on">Press on</option>
+                            </optgroup>
+                            <optgroup label="Otros & Cejas">
+                                <option value="Base rubber">Base rubber</option>
+                                <option value="Tres pasos Manos/Pies">Tres pasos Manos/Pies</option>
+                                <option value="Pestañas / Lashista">Servicio de Pestañas (Lashista)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profesional Preferido</label>
+                        <select id="staff_selected" class="form-control" required>
+                            <option value="">-- Seleccione la profesional --</option>
+                            <option value="Valentina (Manicurista)">Valentina (Manicurista)</option>
+                            <option value="Sofía (Manicurista)">Sofía (Manicurista)</option>
+                            <option value="Sara Correa (Manicurista)">Sara Correa (Manicurista)</option>
+                            <option value="Sara Quiroz (Manicurista)">Sara Quiroz (Manicurista)</option>
+                            <option value="Yudy Giraldo (Lashista)">Yudy Giraldo (Lashista)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fecha de la Cita</label>
+                        <input type="date" id="appointment_date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora de la Cita (Hora Col)</label>
+                        <input type="time" id="appointment_time" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn-action" style="background: #25D366;"><i class="fa-brands fa-whatsapp"></i> Enviar a WhatsApp</button>
+                </form>
+
+                <div class="history-section">
+                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial de Citas</h3>
+                    <div id="appointments-history-container">
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>© 2026 Todos los derechos reservados.</p>
+            <p>Hecha por <a href="#">Vibras Positivas HM</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function switchView(viewId) {
+            document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            
+            const btnIndex = viewId === 'inicio' ? 0 : viewId === 'precios' ? 1 : 2;
+            document.querySelectorAll('.tab-btn')[btnIndex].classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        let userLocation = "No proporcionada";
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+                },
+                () => { userLocation = "Ubicación denegada por el usuario"; }
+            );
+        }
+
+        // Cargar el historial local cuando se inicia la página
+        document.addEventListener("DOMContentLoaded", renderHistory);
+
+        function sendWhatsApp(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('client_name').value;
+            const phone = document.getElementById('client_phone').value;
+            const service = document.getElementById('service_selected').value;
+            const staff = document.getElementById('staff_selected').value;
+            const date = document.getElementById('appointment_date').value;
+            const time = document.getElementById('appointment_time').value;
+
+            // Guardar cita en el LocalStorage para el Historial antes de redirigir
+            const appointmentId = Date.now();
+            const newAppointment = { id: appointmentId, name, phone, service, staff, date, time };
+            
+            let currentHistory = JSON.parse(localStorage.getItem("musas_history")) || [];
+            currentHistory.push(newAppointment);
+            localStorage.setItem("musas_history", JSON.stringify(currentHistory));
+            
+            // Renderizar la lista actualizada de inmediato
+            renderHistory();
+
+            // Mensaje de WhatsApp estructurado con la autoría solicitada
+            const message = `✨ *NUEVA SOLICITUD DE CITA - MUSAS SPA* ✨\n\n` +
+                            `👤 *Cliente:* ${name}\n` +
+                            `📞 *Celular:* ${phone}\n` +
+                            `💅 *Servicio:* ${service}\n` +
+                            `👩‍🎨 *Especialista:* ${staff}\n` +
+                            `📅 *Fecha:* ${date}\n` +
+                            `⏰ *Hora:* ${time} (Hora Col)\n\n` +
+                            `📍 *Ubicación del cliente:* ${userLocation}\n\n` +
+                            `📱 _App desarrollada por Vibras Positivas HM - Derechos Reservados_`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/573137259658?text=${encodedMessage}`, '_blank');
+            
+            // Limpiar formulario tras el envío
+            document.getElementById('appointment-form').reset();
+        }
+
+        // Función para pintar las tarjetas de citas guardadas en el dispositivo
+        function renderHistory() {
+            const container = document.getElementById("appointments-history-container");
+            const history = JSON.parse(localStorage.getItem("musas_history")) || [];
+            
+            if (history.length === 0) {
+                container.innerHTML = `<p style="font-size: 13px; color: #888; text-align: center; font-style: italic;">No hay citas registradas en este dispositivo.</p>`;
+                return;
+            }
+
+            // Ordenar para mostrar la más reciente arriba
+            history.sort((a, b) => b.id - a.id);
+
+            container.innerHTML = history.map(appt => `
+                <div class="history-card">
+                    <button class="btn-delete" onclick="deleteAppointment(${appt.id})" title="Borrar Cita">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    <p><strong>Servicio:</strong> ${appt.service}</p>
+                    <p><strong>Especialista:</strong> ${appt.staff}</p>
+                    <p><strong>Fecha y Hora:</strong> ${appt.date} a las ${appt.time}</p>
+                    <p style="color: #666; font-size: 11px; margin-top: 4px;">
+                        <i class="fa-solid fa-user"></i> Cliente: ${appt.name} (${appt.phone})
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        // Función para borrar registros individuales del historial
+        function deleteAppointment(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este registro del historial?")) {
+                let history = JSON.parse(localStorage.getItem("musas_history")) || [];
+                history = history.filter(appt => appt.id !== id);
+                localStorage.setItem("musas_history", JSON.stringify(history));
+                renderHistory();
+            }
+        }
+
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => self.skipWaiting());
+                self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob));
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.style.display = 'none';
+                deferredPrompt = null;
+            }
+        });
+    </script>
+</body>
+</html>
