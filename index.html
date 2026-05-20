@@ -1,1 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musas Spa - Tarjeta Digital</title>
+    
+    <meta name="theme-color" content="#d4af37">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Musas Spa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk11c2FzIFNwYSIsCiAgInNob3J0X25hbWUiOiAiTXVzYXMgU3BhIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOWY5ZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjZDRhZjM3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmltZ3VyLmNvbS9mSTlqWVBRLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
 
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark: #222;
+            --light-bg: #fdfbf7;
+            --text: #444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20 shadow rgba(0,0,0,0.1);
+        }
+
+        /* Encabezado Principal */
+        header {
+            background: linear-gradient(135deg, #1a2a3a 0%, #0d151f 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+            color: white;
+        }
+
+        .logo-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin: 0 auto 15px;
+            background: url('https://i.imgur.com/fI9jYPQ.jpeg') center/cover no-repeat;
+        }
+
+        header h1 {
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        /* Navegación interna (Tabs) */
+        .nav-tabs {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #777;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .tab-btn.active {
+            color: var(--gold);
+            border-bottom: 3px solid var(--gold);
+            background: #fffdf9;
+        }
+
+        /* Contenido de Vistas */
+        .view-content {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        /* Tarjeta Digital / Inicio */
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pqr-box {
+            background: #f0f4f8;
+            border-left: 4px solid #1a2a3a;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        /* Botón de Acción Principal */
+        .btn-action {
+            display: block;
+            background: var(--gold);
+            color: white;
+            text-align: center;
+            padding: 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 15px 0;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+
+        /* Lista de Precios */
+        .price-category {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            color: #1a2a3a;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 5px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            font-size: 14px;
+        }
+
+        /* Redes Sociales e Iconos */
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            text-decoration: none;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .icon-wa { color: #25D366; }
+        .icon-ig { color: #E1306C; }
+        .icon-fb { color: #1877F2; }
+        .icon-tk { color: #000000; }
+        .icon-map { color: #EA4335; }
+
+        /* Footer Obligatorio */
+        footer {
+            background: #111;
+            color: #bbb;
+            text-align: center;
+            padding: 15px;
+            font-size: 11px;
+            margin-top: auto;
+            border-top: 2px solid var(--gold);
+        }
+
+        footer a { color: var(--gold); text-decoration: none; }
+
+        /* Botón de Instalación */
+        #install-btn {
+            display: none;
+            background: #222;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="logo-placeholder"></div>
+            <h1>MUSAS SPA</h1>
+            <p>Salón & Estética</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchView('inicio')"><i class="fa-solid fa-address-card"></i> Inicio</button>
+            <button class="tab-btn" onclick="switchView('precios')"><i class="fa-solid fa-list-check"></i> Precios</button>
+            <button class="tab-btn" onclick="switchView('citas')"><i class="fa-solid fa-calendar-day"></i> Citas</button>
+        </nav>
+
+        <div class="view-content">
+            
+            <div id="view-inicio" class="page-view active">
+                <div class="info-card">
+                    <h3>¡Bienvenida a Musas Spa!</h3>
+                    <p style="margin: 10px 0; font-size: 14px;">Agenda tus citas de forma rápida y accede a todos nuestros servicios digitales desde un solo lugar.</p>
+                    
+                    <button id="install-btn" class="btn-action"><i class="fa-solid fa-download"></i> Descargar Aplicación</button>
+                    
+                    <button class="btn-action" onclick="switchView('precios')">Ver Lista de Precios</button>
+                    <button class="btn-action" onclick="switchView('citas')" style="background: #1a2a3a;">Agendar Cita Ahora</button>
+                    
+                    <div class="pqr-box">
+                        <strong><i class="fa-solid fa-headset"></i> Línea de Atención PQR:</strong><br>
+                        <a href="tel:3009785761" style="color: #1a2a3a; font-weight: bold; text-decoration: none;">300 978 5761</a>
+                    </div>
+                </div>
+
+                <h4 style="text-align: center; margin-top:20px;">Síguenos en nuestras redes</h4>
+                <div class="social-container">
+                    <a href="https://wa.me/573137259658" target="_blank" class="social-icon icon-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/musasspa7?igsh=MWF6bXB2ZnU1djM5bw==" target="_blank" class="social-icon icon-ig"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/1H1iAQ6h3k/?mibextid=wwXIfr" target="_blank" class="social-icon icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.tiktok.com/@musasspa7?_r=1&_t=ZS-96WXrN6s9gq" target="_blank" class="
