@@ -36,6 +36,7 @@
             --light-bg: #fdfbf7;
             --text: #444;
             --danger: #dc3545;
+            --success: #25D366;
         }
 
         * {
@@ -65,13 +66,13 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        /* Encabezado Principal */
+        /* Encabezado Principal Modificado a Fondo Blanco */
         header {
-            background: linear-gradient(135deg, #1a2a3a 0%, #0d151f 100%);
+            background: white;
             padding: 30px 20px;
             text-align: center;
             border-bottom: 3px solid var(--gold);
-            color: white;
+            color: var(--dark);
         }
 
         .logo-container {
@@ -81,7 +82,7 @@
             border: 2px solid var(--gold);
             margin: 0 auto 15px;
             overflow: hidden;
-            background-color: #1a2a3a;
+            background-color: #fdfbf7;
         }
 
         .logo-container img {
@@ -93,8 +94,14 @@
         header h1 {
             font-size: 24px;
             letter-spacing: 2px;
-            color: var(--gold);
+            color: var(--dark);
             margin-bottom: 5px;
+        }
+
+        header p {
+            color: #000000;
+            font-weight: 600;
+            font-size: 14px;
         }
 
         /* Navegación interna (Tabs) */
@@ -292,7 +299,19 @@
             transition: 0.2s;
         }
 
-        .btn-delete:hover {
+        .btn-edit-inline {
+            position: absolute;
+            top: 12px;
+            right: 40px;
+            background: transparent;
+            color: #0056b3;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px;
+        }
+
+        .btn-delete:hover, .btn-edit-inline:hover {
             transform: scale(1.15);
         }
 
@@ -308,6 +327,15 @@
         }
 
         footer a { color: var(--gold); text-decoration: none; }
+        
+        .admin-login-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #888;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -318,7 +346,7 @@
                 <img src="musas2.png" alt="Logo Musas Spa">
             </div>
             <h1>MUSAS SPA</h1>
-            <p>Salón & Estética</p>
+            <p>Uñas, cejas y pestañas</p>
         </header>
 
         <nav class="nav-tabs">
@@ -341,18 +369,20 @@
                     
                     <div class="pqr-box">
                         <strong><i class="fa-solid fa-headset"></i> Línea de Atención PQR:</strong><br>
-                        <a href="tel:3009785761" style="color: #1a2a3a; font-weight: bold; text-decoration: none;">300 978 5761</a>
+                        <a href="tel:3137259658" style="color: #1a2a3a; font-weight: bold; text-decoration: none;">313 725 9658</a>
                     </div>
                 </div>
 
                 <h4 style="text-align: center; margin-top:20px;">Síguenos en nuestras redes</h4>
                 <div class="social-container">
-                    <a href="https://wa.me/573137259658" target="_blank" class="social-icon icon-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://wa.me/573009785761" target="_blank" class="social-icon icon-wa"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="https://www.instagram.com/musasspa7?igsh=MWF6bXB2ZnU1djM5bw==" target="_blank" class="social-icon icon-ig"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://www.facebook.com/share/1H1iAQ6h3k/?mibextid=wwXIfr" target="_blank" class="social-icon icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="https://www.tiktok.com/@musasspa7?_r=1&_t=ZS-96WXrN6s9gq" target="_blank" class="social-icon icon-tk"><i class="fa-brands fa-tiktok"></i></a>
                     <a href="https://maps.app.goo.gl/6DrGNzE9ds5445FV8?g_st=ic" target="_blank" class="social-icon icon-map"><i class="fa-solid fa-map-location-dot"></i></a>
                 </div>
+                
+                <center><span class="admin-login-link" onclick="toggleAdminMode()">Modo Administrador</span></center>
             </div>
 
             <div id="view-precios" class="page-view">
@@ -430,7 +460,7 @@
                                 <option value="Forrado poligel">Forrado poligel</option>
                                 <option value="Retoque Forrado">Retoque Forrado</option>
                                 <option value="Poligel esculpido">Poligel esculpido</option>
-                                <option value="Acrílico esculpido">Acrílico esculpido</option>
+                                <option value="Acrílico esculpido">Acrriílico esculpido</option>
                                 <option value="Acrílico con tips">Acrílico con tips</option>
                                 <option value="Postizas + Semipermanente">Postizas + Semipermanente</option>
                                 <option value="Press on">Press on</option>
@@ -468,10 +498,9 @@
                     <button type="submit" class="btn-action" style="background: #25D366;"><i class="fa-brands fa-whatsapp"></i> Enviar a WhatsApp</button>
                 </form>
 
-                <div class="history-section">
-                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial de Citas</h3>
-                    <div id="appointments-history-container">
-                        </div>
+                <div class="history-section" id="admin-history-section" style="display: none;">
+                    <h3><i class="fa-solid fa-lock"></i> Panel Administrador: Control de Agenda</h3>
+                    <div id="appointments-history-container"></div>
                 </div>
             </div>
 
@@ -484,6 +513,8 @@
     </div>
 
     <script>
+        let isAdmin = false;
+
         function switchView(viewId) {
             document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -506,8 +537,36 @@
             );
         }
 
-        // Cargar el historial local cuando se inicia la página
-        document.addEventListener("DOMContentLoaded", renderHistory);
+        document.addEventListener("DOMContentLoaded", () => {
+            // Revisar si viene una confirmación de cita en la URL (?c=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const incomingData = urlParams.get('c');
+            if (incomingData) {
+                try {
+                    const decoded = JSON.parse(atob(incomingData));
+                    let currentHistory = JSON.parse(localStorage.getItem("musas_history")) || [];
+                    if (!currentHistory.some(a => a.id === decoded.id)) {
+                        currentHistory.push(decoded);
+                        localStorage.setItem("musas_history", JSON.stringify(currentHistory));
+                        alert("¡Cita registrada exitosamente en el panel administrador!");
+                    }
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } catch(e) { console.error("Error al procesar link de cita."); }
+            }
+            renderHistory();
+        });
+
+        function toggleAdminMode() {
+            const pass = prompt("Ingrese la contraseña de administrador para gestionar citas:");
+            if(pass === "musas2026") {
+                isAdmin = true;
+                document.getElementById("admin-history-section").style.display = "block";
+                renderHistory();
+                alert("Modo Administrador activado. Ahora puedes ver, borrar y editar horarios.");
+            } else {
+                alert("Contraseña incorrecta.");
+            }
+        }
 
         function sendWhatsApp(event) {
             event.preventDefault();
@@ -518,19 +577,14 @@
             const staff = document.getElementById('staff_selected').value;
             const date = document.getElementById('appointment_date').value;
             const time = document.getElementById('appointment_time').value;
-
-            // Guardar cita en el LocalStorage para el Historial antes de redirigir
             const appointmentId = Date.now();
-            const newAppointment = { id: appointmentId, name, phone, service, staff, date, time };
-            
-            let currentHistory = JSON.parse(localStorage.getItem("musas_history")) || [];
-            currentHistory.push(newAppointment);
-            localStorage.setItem("musas_history", JSON.stringify(currentHistory));
-            
-            // Renderizar la lista actualizada de inmediato
-            renderHistory();
 
-            // Mensaje de WhatsApp estructurado con la autoría solicitada
+            const apptObj = { id: appointmentId, name, phone, service, staff, date, time };
+            
+            // Link de confirmación automática de retorno para el Admin
+            const secureToken = btoa(JSON.stringify(apptObj));
+            const confirmLink = `https://haroldco45.github.io/musas-spa/?c=${secureToken}`;
+
             const message = `✨ *NUEVA SOLICITUD DE CITA - MUSAS SPA* ✨\n\n` +
                             `👤 *Cliente:* ${name}\n` +
                             `📞 *Celular:* ${phone}\n` +
@@ -539,36 +593,38 @@
                             `📅 *Fecha:* ${date}\n` +
                             `⏰ *Hora:* ${time} (Hora Col)\n\n` +
                             `📍 *Ubicación del cliente:* ${userLocation}\n\n` +
+                            `🔗 *Confirmar Cita en Agenda:* ${confirmLink}\n\n` +
                             `📱 _App desarrollada por Vibras Positivas HM - Derechos Reservados_`;
 
             const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/573137259658?text=${encodedMessage}`, '_blank');
-            
-            // Limpiar formulario tras el envío
+            window.open(`https://wa.me/573009785761?text=${encodedMessage}`, '_blank');
             document.getElementById('appointment-form').reset();
         }
 
-        // Función para pintar las tarjetas de citas guardadas en el dispositivo
         function renderHistory() {
             const container = document.getElementById("appointments-history-container");
             const history = JSON.parse(localStorage.getItem("musas_history")) || [];
             
+            if (!isAdmin) return;
+
             if (history.length === 0) {
-                container.innerHTML = `<p style="font-size: 13px; color: #888; text-align: center; font-style: italic;">No hay citas registradas en este dispositivo.</p>`;
+                container.innerHTML = `<p style="font-size: 13px; color: #888; text-align: center; font-style: italic;">No hay citas sincronizadas en la agenda.</p>`;
                 return;
             }
 
-            // Ordenar para mostrar la más reciente arriba
             history.sort((a, b) => b.id - a.id);
 
             container.innerHTML = history.map(appt => `
                 <div class="history-card">
+                    <button class="btn-edit-inline" onclick="editAppointmentTime(${appt.id})" title="Cambiar Horario">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
                     <button class="btn-delete" onclick="deleteAppointment(${appt.id})" title="Borrar Cita">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                     <p><strong>Servicio:</strong> ${appt.service}</p>
                     <p><strong>Especialista:</strong> ${appt.staff}</p>
-                    <p><strong>Fecha y Hora:</strong> ${appt.date} a las ${appt.time}</p>
+                    <p style="color: #0056b3;"><strong>Horario:</strong> ${appt.date} a las ${appt.time}</p>
                     <p style="color: #666; font-size: 11px; margin-top: 4px;">
                         <i class="fa-solid fa-user"></i> Cliente: ${appt.name} (${appt.phone})
                     </p>
@@ -576,7 +632,24 @@
             `).join('');
         }
 
-        // Función para borrar registros individuales del historial
+        function editAppointmentTime(id) {
+            let history = JSON.parse(localStorage.getItem("musas_history")) || [];
+            const appt = history.find(a => a.id === id);
+            
+            if(appt) {
+                const newDate = prompt("Modificar Fecha (AAAA-MM-DD):", appt.date);
+                const newTime = prompt("Modificar Hora (HH:MM):", appt.time);
+                
+                if(newDate && newTime) {
+                    appt.date = newDate;
+                    appt.time = newTime;
+                    localStorage.setItem("musas_history", JSON.stringify(history));
+                    renderHistory();
+                    alert("Horario de cita modificado con éxito.");
+                }
+            }
+        }
+
         function deleteAppointment(id) {
             if (confirm("¿Estás seguro de que deseas eliminar este registro del historial?")) {
                 let history = JSON.parse(localStorage.getItem("musas_history")) || [];
