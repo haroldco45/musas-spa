@@ -13,7 +13,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk11c2FzIFNwYSIsCiAgInNob3J0X25hbWUiOiAiTXVzYXMgU3BhIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOWY5ZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjZDRhZjM3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmltZ3VyLmNvbS9mSTlqWVBRLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk11c2FzIFNwYSIsCiAgInNob3J0X25hbWUiOiAiTXVzYXMgU3BhIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOWY5ZjkiLAogICJ0aGVtZV9jb2xvciI6ICIjZDRhZjM3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAibXVzYXMyLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
 
     <style>
         :root {
@@ -47,7 +47,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 0 20 shadow rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
         /* Encabezado Principal */
@@ -59,13 +59,20 @@
             color: white;
         }
 
-        .logo-placeholder {
+        .logo-container {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             border: 2px solid var(--gold);
             margin: 0 auto 15px;
-            background: url('https://i.imgur.com/fI9jYPQ.jpeg') center/cover no-repeat;
+            overflow: hidden;
+            background-color: #1a2a3a;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         header h1 {
@@ -201,8 +208,9 @@
         .social-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
 
         .social-icon {
@@ -251,7 +259,9 @@
 
     <div class="app-container">
         <header>
-            <div class="logo-placeholder"></div>
+            <div class="logo-container">
+                <img src="musas2.png" alt="Logo Musas Spa">
+            </div>
             <h1>MUSAS SPA</h1>
             <p>Salón & Estética</p>
         </header>
@@ -285,4 +295,209 @@
                     <a href="https://wa.me/573137259658" target="_blank" class="social-icon icon-wa"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="https://www.instagram.com/musasspa7?igsh=MWF6bXB2ZnU1djM5bw==" target="_blank" class="social-icon icon-ig"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://www.facebook.com/share/1H1iAQ6h3k/?mibextid=wwXIfr" target="_blank" class="social-icon icon-fb"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="https://www.tiktok.com/@musasspa7?_r=1&_t=ZS-96WXrN6s9gq" target="_blank" class="
+                    <a href="https://www.tiktok.com/@musasspa7?_r=1&_t=ZS-96WXrN6s9gq" target="_blank" class="social-icon icon-tk"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://maps.app.goo.gl/6DrGNzE9ds5445FV8?g_st=ic" target="_blank" class="social-icon icon-map"><i class="fa-solid fa-map-location-dot"></i></a>
+                </div>
+            </div>
+
+            <div id="view-precios" class="page-view">
+                <button class="btn-action" onclick="switchView('citas')" style="margin-bottom: 20px;">Ir a Solicitar Cita</button>
+                
+                <div class="price-category">
+                    <div class="category-title">Semipermanente</div>
+                    <div class="price-item"><span>Manos</span> <span>$43.000 / $42.000</span></div>
+                    <div class="price-item"><span>Pies</span> <span>$42.000</span></div>
+                </div>
+
+                <div class="price-category">
+                    <div class="category-title">Tradicional</div>
+                    <div class="price-item"><span>Manos (sin decorar)</span> <span>$25.000</span></div>
+                    <div class="price-item"><span>Pies</span> <span>$27.000</span></div>
+                </div>
+
+                <div class="price-category">
+                    <div class="category-title">Caballeros</div>
+                    <div class="price-item"><span>Semipermanente Manos / Pies</span> <span>$27.000</span></div>
+                    <div class="price-item"><span>Tradicional Manos</span> <span>$23.000</span></div>
+                    <div class="price-item"><span>Tradicional Pies</span> <span>$25.000</span></div>
+                </div>
+
+                <div class="price-category">
+                    <div class="category-title">Sistemas y Técnicas</div>
+                    <div class="price-item"><span>Dipping</span> <span>$68.000</span></div>
+                    <div class="price-item"><span>Forrado en acrílico / poligel</span> <span>$85.000</span></div>
+                    <div class="price-item"><span>Retoque forrado acrílico / poligel</span> <span>$80.000</span></div>
+                    <div class="price-item"><span>Poligel / Acrílico esculpido</span> <span>$115.000</span></div>
+                    <div class="price-item"><span>Acrílico con tips</span> <span>$105.000</span></div>
+                    <div class="price-item"><span>Postizas + semipermanente</span> <span>$60.000</span></div>
+                    <div class="price-item"><span>Press on</span> <span>$90.000</span></div>
+                    <div class="price-item"><span>Retoque press on</span> <span>$75.000</span></div>
+                </div>
+
+                <div class="price-category">
+                    <div class="category-title">Otros Servicios & Adicionales</div>
+                    <div class="price-item"><span>Base rubber</span> <span>$60.000</span></div>
+                    <div class="price-item"><span>Tres pasos Manos</span> <span>$30.000</span></div>
+                    <div class="price-item"><span>Tres pasos Pies</span> <span>$32.000</span></div>
+                    <div class="price-item"><span>Uña Adicional Acrílico</span> <span>$12.000</span></div>
+                    <div class="price-item"><span>Uña Adicional Poligel</span> <span>$10.000</span></div>
+                    <div class="price-item"><span>Uña Adicional Press on</span> <span>$9.000</span></div>
+                </div>
+            </div>
+
+            <div id="view-citas" class="page-view">
+                <form id="appointment-form" onsubmit="sendWhatsApp(event)">
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" id="client_name" class="form-control" placeholder="Ej. María Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Teléfono Celular</label>
+                        <input type="tel" id="client_phone" class="form-control" placeholder="Ej. 3123456789" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Servicio Requerido</label>
+                        <select id="service_selected" class="form-control" required>
+                            <option value="">-- Seleccione un servicio --</option>
+                            <optgroup label="Semipermanente">
+                                <option value="Semipermanente Manos">Semipermanente Manos</option>
+                                <option value="Semipermanente Pies">Semipermanente Pies</option>
+                            </optgroup>
+                            <optgroup label="Tradicional">
+                                <option value="Tradicional Manos">Tradicional Manos</option>
+                                <option value="Tradicional Pies">Tradicional Pies</option>
+                            </optgroup>
+                            <optgroup label="Sistemas y Técnicas">
+                                <option value="Dipping">Dipping</option>
+                                <option value="Forrado en acrílico">Forrado en acrílico</option>
+                                <option value="Forrado poligel">Forrado poligel</option>
+                                <option value="Retoque Forrado">Retoque Forrado</option>
+                                <option value="Poligel esculpido">Poligel esculpido</option>
+                                <option value="Acrílico esculpido">Acrílico esculpido</option>
+                                <option value="Acrílico con tips">Acrílico con tips</option>
+                                <option value="Postizas + Semipermanente">Postizas + Semipermanente</option>
+                                <option value="Press on">Press on</option>
+                            </optgroup>
+                            <optgroup label="Otros & Cejas">
+                                <option value="Base rubber">Base rubber</option>
+                                <option value="Tres pasos Manos/Pies">Tres pasos Manos/Pies</option>
+                                <option value="Pestañas / Lashista">Servicio de Pestañas (Lashista)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profesional Preferido</label>
+                        <select id="staff_selected" class="form-control" required>
+                            <option value="">-- Seleccione la profesional --</option>
+                            <option value="Valentina (Manicurista)">Valentina (Manicurista)</option>
+                            <option value="Sofía (Manicurista)">Sofía (Manicurista)</option>
+                            <option value="Sara Correa (Manicurista)">Sara Correa (Manicurista)</option>
+                            <option value="Sara Quiroz (Manicurista)">Sara Quiroz (Manicurista)</option>
+                            <option value="Yudy Giraldo (Lashista)">Yudy Giraldo (Lashista)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fecha de la Cita</label>
+                        <input type="date" id="appointment_date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora de la Cita (Hora Col)</label>
+                        <input type="time" id="appointment_time" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn-action" style="background: #25D366;"><i class="fa-brands fa-whatsapp"></i> Enviar a WhatsApp</button>
+                </form>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>© 2026 Todos los derechos reservados.</p>
+            <p>Hecha por <a href="#">Vibras Positivas HM</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Control de Vistas (Navegación Interna)
+        function switchView(viewId) {
+            document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            
+            const btnIndex = viewId === 'inicio' ? 0 : viewId === 'precios' ? 1 : 2;
+            document.querySelectorAll('.tab-btn')[btnIndex].classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        let userLocation = "No proporcionada";
+
+        // Obtener Geolocalización al iniciar
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+                },
+                () => { userLocation = "Ubicación denegada por el usuario"; }
+            );
+        }
+
+        // Envío de datos procesados a WhatsApp
+        function sendWhatsApp(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('client_name').value;
+            const phone = document.getElementById('client_phone').value;
+            const service = document.getElementById('service_selected').value;
+            const staff = document.getElementById('staff_selected').value;
+            const date = document.getElementById('appointment_date').value;
+            const time = document.getElementById('appointment_time').value;
+
+            const message = `✨ *NUEVA SOLICITUD DE CITA - MUSAS SPA* ✨\n\n` +
+                            `👤 *Cliente:* ${name}\n` +
+                            `📞 *Celular:* ${phone}\n` +
+                            `💅 *Servicio:* ${service}\n` +
+                            `👩‍🎨 *Especialista:* ${staff}\n` +
+                            `📅 *Fecha:* ${date}\n` +
+                            `⏰ *Hora:* ${time} (Hora Col)\n\n` +
+                            `📍 *Ubicación del cliente:* ${userLocation}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/573137259658?text=${encodedMessage}`, '_blank');
+        }
+
+        // Registro de Service Worker
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => self.skipWaiting());
+                self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob));
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.style.display = 'none';
+                deferredPrompt = null;
+            }
+        });
+    </script>
+</body>
+</html>
