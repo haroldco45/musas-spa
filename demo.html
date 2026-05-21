@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Interactivo - Musas Spa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #11141a;
+            color: #eee;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 20px;
+            max-width: 1000px;
+        }
+
+        .demo-header h1 {
+            color: #d4af37;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .demo-header p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .workspace {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Simulador de Teléfono Ficticio */
+        .phone-simulator {
+            width: 380px;
+            height: 760px;
+            background: #fdfbf7;
+            border: 12px solid #333;
+            border-radius: 36px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: #444;
+            position: relative;
+        }
+
+        .phone-top {
+            background: #222;
+            height: 25px;
+            width: 100%;
+            color: white;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-weight: bold;
+        }
+
+        .phone-screen {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        /* Estilos del App Interna */
+        .app-header {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #d4af37;
+            margin: -15px -15px 15px -15px;
+        }
+
+        .app-header h2 { font-size: 18px; color: #222; letter-spacing: 1px; }
+        .app-header p { font-size: 11px; color: #000; font-weight: bold; }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a2a3a;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 3px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
+
+        .btn-action {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #d4af37;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 5px;
+        }
+
+        /* Simulador de chat/consola derecha */
+        .console-box {
+            background: #1e2530;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid #334155;
+        }
+
+        .whatsapp-msg-preview {
+            background: #e1f5fe;
+            border-radius: 8px;
+            padding: 12px;
+            color: #222;
+            font-size: 12px;
+            white-space: pre-line;
+            border-left: 4px solid #0288d1;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .confirm-btn-sim {
+            display: inline-block;
+            background: #0288d1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 8px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .history-card {
+            background: white;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid #d4af37;
+            position: relative;
+            font-size: 12px;
+        }
+
+        .btn-delete { position: absolute; top: 8px; right: 8px; color: #dc3545; background: none; border: none; cursor: pointer; }
+        .btn-edit { position: absolute; top: 8px; right: 28px; color: #0056b3; background: none; border: none; cursor: pointer; }
+
+        .btn-excel {
+            background: #107c41;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .label-tag {
+            background: #334155;
+            color: #d4af37;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="demo-header">
+        <h1>Simulador de Flujo PWA - Token Inteligente</h1>
+        <p>Prueba el ecosistema sin salir de esta pestaña. Al enviar la cita desde el teléfono izquierdo (Cliente), se generará un archivo de alarma local y se creará el mensaje de WhatsApp simulado. Al activar el teléfono derecho (Administrador) y hacer clic en el link generado, los datos se cargarán automáticamente en la Agenda persistente y se podrán exportar a Excel.</p>
+    </div>
+
+    <div class="workspace">
+        
+        <div>
+            <center><div class="label-tag"><i class="fa-solid fa-user"></i> Teléfono del Cliente</div></center>
+            <div class="phone-simulator">
+                <div class="phone-top"><span>12:30</span> <span>Musas PWA</span> <span><i class="fa-solid fa-battery-three-quarters"></i></span></div>
+                <div class="phone-screen">
+                    <div class="app-header">
+                        <h2>MUSAS SPA</h2>
+                        <p>Uñas, cejas y pestañas</p>
+                    </div>
+                    
+                    <div class="section-title">Solicitar Cita</div>
+                    <form id="client-form" onsubmit="simulateClientSubmit(event)">
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="c_name" class="form-control" value="Marleny Marín" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Celular</label>
+                            <input type="tel" id="c_phone" class="form-control" value="3147894561" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Servicio</label>
+                            <select id="c_service" class="form-control" required>
+                                <option value="Semipermanente Manos">Semipermanente Manos ($43.000)</option>
+                                <option value="Dipping">Dipping ($68.000)</option>
+                                <option value="Pestañas / Lashista">Servicio de Pestañas (Lashista)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Profesional</label>
+                            <select id="c_staff" class="form-control" required>
+                                <option value="Sofía (Manicurista)">Sofía (Manicurista)</option>
+                                <option value="Yudy Giraldo (Lashista)">Yudy Giraldo (Lashista)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" id="c_date" class="form-control" value="2026-05-22" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora</label>
+                            <input type="time" id="c_time" class="form-control" value="14:30" required>
+                        </div>
+                        <button type="submit" class="btn-action" style="background: var(--success);"><i class="fa-brands fa-whatsapp"></i> Enviar Solicitud</button>
+                    </form>
+
+                    <div class="console-box" id="client-output" style="display:none; margin-top:15px; font-size:11px;">
+                        <span style="color:#25D366; font-weight:bold;"><i class="fa-solid fa-circle-check"></i> ¡Éxito Cliente!</span><br>
+                        1. Se descargó tu archivo de alarma `.ics`.<br>
+                        2. Se preparó el mensaje de WhatsApp.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <center><div class="label-tag"><i class="fa-brands fa-whatsapp"></i> Chat de WhatsApp Recibido</div></center>
+            <div style="width: 320px; margin-top: 10px;">
+                <p style="font-size: 12px; color: #aaa; margin-bottom: 10px; text-align: center;">Aquí verás el mensaje que le llega al salón:</p>
+                <div id="whatsapp-preview-box" class="whatsapp-msg-preview">
+                    <span style="color: #666; font-style: italic;">Esperando envío del cliente...</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <center><div class="label-tag"><i class="fa-solid fa-user-gear"></i> Teléfono del Administrador</div></center>
+            <div class="phone-simulator" style="background: #f1f5f9;">
+                <div class="phone-top" style="background:#0f172a;"><span>12:31</span> <span>Panel de Agenda</span> <span><i class="fa-solid fa-lock"></i></span></div>
+                <div class="phone-screen">
+                    <div class="app-header" style="background: #fff; border-bottom: 2px solid #0f172a;">
+                        <h2>CONTROL INTERNO</h2>
+                        <p style="color:#0f172a;">Musas Spa Agenda Real</p>
+                    </div>
+
+                    <button class="btn-excel" onclick="exportDemoExcel()"><i class="fa-solid fa-file-excel"></i> Exportar a Excel (.xls)</button>
+                    
+                    <div class="section-title" style="color:#0f172a;">Citas Confirmadas</div>
+                    <div id="admin-history-container">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Memoria volátil de simulación para separar del localStorage real de producción
+        let demoHistory = [
+            { id: 111, name: "Valeria Marín", phone: "3131112222", service: "Tradicional Manos", staff: "Valentina (Manicurista)", date: "2026-05-21", time: "09:00" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", renderDemoHistory);
+
+        function simulateClientSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('c_name').value;
+            const phone = document.getElementById('c_phone').value;
+            const service = document.getElementById('c_service').value;
+            const staff = document.getElementById('staff_selected') ? document.getElementById('staff_selected').value : document.getElementById('c_staff').value;
+            const date = document.getElementById('c_date').value;
+            const time = document.getElementById('c_time').value;
+            const id = Date.now();
+
+            const apptObj = { id, name, phone, service, staff, date, time };
+
+            // 1. Simular la alarma del cliente (.ics)
+            document.getElementById('client-output').style.display = "block";
+            
+            // 2. Crear Token y Link Encriptado Base64 simulado
+            const token = btoa(JSON.stringify(apptObj));
+            const simulatedLink = `https://haroldco45.github.io/musas-spa/?c=${token}`;
+
+            // 3. Renderizar vista de WhatsApp Intermedia
+            const previewBox = document.getElementById('whatsapp-preview-box');
+            previewBox.style.display = "block";
+            previewBox.innerHTML = `✨ *NUEVA SOLICITUD DE CITA* ✨\n\n` +
+                                   `👤 *Cliente:* ${name}\n` +
+                                   `📞 *Celular:* ${phone}\n` +
+                                   `💅 *Servicio:* ${service}\n` +
+                                   `👩‍🎨 *Especialista:* ${staff}\n` +
+                                   `📅 *Fecha:* ${date}\n` +
+                                   `⏰ *Hora:* ${time}\n\n` +
+                                   `🔗 *Confirmar Cita en Agenda:* \n` +
+                                   `<span style="color:#0288d1; word-break:break-all; text-decoration:underline; font-size:10px;">${simulatedLink}</span>\n\n` +
+                                   `<button class="confirm-btn-sim" onclick="simulateAdminClick('${token}')">Simular Clic de Admin</button>`;
+        }
+
+        // Simula lo que ocurre cuando el administrador abre el link en su propio celular
+        function simulateAdminClick(token) {
+            try {
+                const decoded = JSON.parse(atob(token));
+                if (!demoHistory.some(a => a.id === decoded.id)) {
+                    demoHistory.push(decoded);
+                    alert("¡Token descifrado correctamente! Cita añadida a la Agenda del Administrador.");
+                    renderDemoHistory();
+                } else {
+                    alert("Esta cita ya había sido agregada.");
+                }
+            } catch(e) { alert("Error al procesar el Token."); }
+        }
+
+        function renderDemoHistory() {
+            const container = document.getElementById("admin-history-container");
+            if (demoHistory.length === 0) {
+                container.innerHTML = `<p style="font-size: 12px; color: #777; text-align: center;">Sin citas en agenda.</p>`;
+                return;
+            }
+
+            demoHistory.sort((a,b) => b.id - a.id);
+
+            container.innerHTML = demoHistory.map(appt => `
+                <div class="history-card">
+                    <button class="btn-edit" onclick="editDemoTime(${appt.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn-delete" onclick="deleteDemo(${appt.id})"><i class="fa-solid fa-trash-can"></i></button>
+                    <p><strong>${appt.service}</strong> con <strong>${appt.staff}</strong></p>
+                    <p style="color:#0056b3; font-weight:bold;">🕒 ${appt.date} - ${appt.time}</p>
+                    <p style="color:#666; font-size:11px; margin-top:4px;"><i class="fa-solid fa-user"></i> ${appt.name} (${appt.phone})</p>
+                </div>
+            `).join('');
+        }
+
+        function editDemoTime(id) {
+            const appt = demoHistory.find(a => a.id === id);
+            if(appt) {
+                const nDate = prompt("Nueva Fecha:", appt.date);
+                const nTime = prompt("Nueva Hora:", appt.time);
+                if(nDate && nTime) {
+                    appt.date = nDate;
+                    appt.time = nTime;
+                    renderDemoHistory();
+                }
+            }
+        }
+
+        function deleteDemo(id) {
+            if(confirm("¿Eliminar registro?")) {
+                demoHistory = demoHistory.filter(a => a.id !== id);
+                renderDemoHistory();
+            }
+        }
+
+        function exportDemoExcel() {
+            let excelTable = `<table border="1"><tr style="background-color:#d4af37; color:white; font-weight:bold;">` +
+                             `<th>Cliente</th><th>Celular</th><th>Servicio</th><th>Especialista</th><th>Fecha</th><th>Hora</th></tr>`;
+            demoHistory.forEach(appt => {
+                excelTable += `<tr><td>${appt.name}</td><td>${appt.phone}</td><td>${appt.service}</td>` +
+                              `<td>${appt.staff}</td><td>${appt.date}</td><td>${appt.time}</td></tr>`;
+            });
+            excelTable += "</table>";
+
+            const blob = new Blob([excelTable], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Demo_Agenda_MusasSpa.xls`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
